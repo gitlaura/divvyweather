@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<head>
+  <link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Roboto+Slab' rel='stylesheet' type='text/css'>
+  <script src="http://d3js.org/d3.v3.js"></script>
+  <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+  <script src="js/weekly_dashboard.js"></script>
+  <script src="js/dashboard_distance.js"></script>
+  <script src="js/coldest_days.js"></script>
+  <script src="js/hottest_days.js"></script>
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+
+<body>
+  <div id="wrapper">
+    <div id="headerwrapper">
+      <h1>Divvy & Chicago Weather</h1>
+      <h2>How did weather affect Divvy rides in 2014?</h2>
+      </br>
+      <div id="buttonWrapper">
+        <h3 style="text-align:center; margin-top:2px; float: left;">Select a filter: </h3>
+        <div id=buttonGender><button onclick="filterCategory('gender')">By Gender</button></div>
+        <div id=buttonCustomer><button onclick="filterCategory('customer')">By Customer Type</button></div>
+        <div id=buttonClear><button onclick="filterCategory('total')">Clear</button></div>
+      </div>
+      <br>
+      <br>
+      <div id="stats">
+        <!-- <img src="images/divvywinter.png" height="150px"></img> -->
+        <div id="statswrapper">
+          <div id="totalstats">
+            <div class="stat">
+              <p class="big">17,849</p>
+              <p class="stattext">Most rides in one day <br>on Saturday, <br>July 19 at 68.5&deg</p>
+            </div>
+            <div class="stat">
+              <p class="big">1.23mi</p>
+              <p class="stattext" style="font-size:14px">Average distance of all Divvy rides</p>
+            </div>
+            <div class="stat">
+              <p class="big">17.1min</p>
+              <p class="stattext" style="font-size:14px">Average duration of all Divvy rides</p>
+            </div>
+            <div class="stat">
+              <p class="big">77%</p>
+              <p class="stattext">of Divvy rides From April-September</p>
+            </div>
+          </div>
+          <div id="genderstats">
+            <div class="stat">
+              <p class="big">403/40</p>
+              <p class="stattext">Male/female rides on coldest Divvy day at -4&deg</p>
+            </div>
+            <div class="stat">
+              <p class="big">0.12mi</p>
+              <p class="stattext" style="font-size:14px">Average distance females ride longer than males</p>
+            </div>
+            <div class="stat">
+              <p class="big">2.5min</p>
+              <p class="stattext" style="font-size:14px">Average duration females ride longer than males</p>
+            </div>
+            <div class="stat">
+              <p class="big">75%</p>
+              <p class="stattext">of subscriber Divvy rides are by male riders</p>
+            </div>
+          </div>
+          <div id="customerstats">
+            <div class="stat">
+              <p class="big">12,092</p>
+              <p class="stattext">Most customer rides <br>in one day on <br>May 25 at 68.5&deg</p>
+            </div>
+            <div class="stat">
+              <p class="big">27.9min</p>
+              <p class="stattext" style="font-size:14px">Average duration of all customer rides; 11.9min for subscribers</p>
+            </div>
+            <div class="stat">
+              <p class="big">44%</p>
+              <p class="stattext">of rides on 30 hottest days made by customers</p>
+            </div>
+            <div class="stat">
+              <p class="big">3%</p>
+              <p class="stattext">of rides on 30 coldest days made by customers</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="legend">
+      <div class="input-color">
+        <p>Avg Weekly Temp</p>
+        <div class="color-box" style="background-color: gray;"></div>
+      </div>
+      <div class="input-color" id="totalLegend">
+        <p>All Divvy Rides</p>
+        <div class="color-box" style="background-color: #3db7e4;"></div>
+      </div>
+      <div class="input-color" id="femaleLegend">
+        <p>Female Subscribers</p>
+        <div class="color-box" style="background-color: #F1C40F;"></div>
+      </div>
+      <div class="input-color" id="maleLegend">
+        <p>Male Subscribers</p>
+        <div class="color-box" style="background-color: #E74C3C;"></div>
+      </div>
+      <div class="input-color" id="subscriberLegend">
+        <p>Annual subscribers</p>
+        <div class="color-box" style="background-color: #2ECC71;"></div>
+      </div>
+      <div class="input-color" id="customerLegend">
+        <p>One-time Customers</p>
+        <div class="color-box" style="background-color: #9B59B6;"></div>
+      </div>
+    </div>
+    <div id="left-column">
+      <div id="ride_count"></div>
+      <div id="average_time"></div>
+      <div id="average_distance"></div>
+    </div>
+    <div id="right-column">
+      <div id=buttonCold><button onclick="hideHot()">Coldest Days</button></div>
+      <div id=buttonHot><button onclick="hideCold()">Hottest Days</button></div>
+      <div id="coldest_days"></div>
+      <div id="hottest_days"></div>
+    </div>
+    <footer>
+      <h4>Notes:</h4>
+        <ul>
+      <li>Divvy was closed or partially closed from January 2 - 8
+      <li>Gender is not tracked for one-time customers
+      <li>Average distance includes rides that started and ended at same station
+      <li>Weather data collected from <a target="_blank" href="http://www.ncdc.noaa.gov/">National Climatic Data Service</a>
+      </ul>
+      <p>Created by <a target="_blank" href="http://linkedin.com/in/getlaura">Laura Rokita</a> at <a target="_blank" href="http://datascopeanalytics.com/">Datascope Analytics</a>
+    </footer>
+  </div>
+
+  <script>
+  function hideHot(){
+    document.getElementById("coldest_days").style.display = 'block';
+    document.getElementById("hottest_days").style.display = 'none';
+  }
+  function hideCold(){
+    document.getElementById("coldest_days").style.display = 'none';
+    document.getElementById("hottest_days").style.display = 'block';
+  }
+  function filterCategory(category){
+    document.getElementById("totalstats").style.display = 'none';
+    document.getElementById("genderstats").style.display = 'none';
+    document.getElementById("customerstats").style.display = 'none';
+    document.getElementById("femaleLegend").style.display = 'none';
+    document.getElementById("maleLegend").style.display = 'none';
+    document.getElementById("subscriberLegend").style.display = 'none';
+    document.getElementById("customerLegend").style.display = 'none';
+    document.getElementById('legend').style.width = "260px";
+    filterRides(category);
+    filterTime(category);
+    filterDistance(category);
+    filterCold(category);
+    filterHot(category);
+    if(category == 'total'){
+      document.getElementById("totalstats").style.display = 'block';
+    }
+    if(category == 'gender'){
+      document.getElementById("genderstats").style.display = 'block';
+      document.getElementById("femaleLegend").style.display = 'block';
+      document.getElementById("maleLegend").style.display = 'block';
+      document.getElementById('legend').style.width = "570px";
+    }
+    if(category == 'customer'){
+      document.getElementById("customerstats").style.display = 'block';
+      document.getElementById("customerLegend").style.display = 'block';
+      document.getElementById("subscriberLegend").style.display = 'block';
+      document.getElementById('legend').style.width = "580px";
+    }
+  }
+  </script>
+
+  <script>
+  filterCategory('total');
+  document.getElementById("hottest_days").style.display = 'none';
+  </script>
+</body>
