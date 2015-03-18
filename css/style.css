@@ -107,8 +107,6 @@ button{
   text-align: center;
   white-space: nowrap;
   vertical-align: middle;
-  ms-touch-action: manipulation;
-  touch-action: manipulation;
   cursor: pointer;
   border: 2px solid transparent;
   border-radius: 4px;
