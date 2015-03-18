@@ -97,6 +97,23 @@ body {
   width:370px;
 }
 
+button{
+  height:25px;
+  font:1.1em 'Fjalla One', sans-serif;
+  color: white;
+  background-color: #FFB544;
+  border-color: black;
+  font-size: 14px;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  ms-touch-action: manipulation;
+  touch-action: manipulation;
+  cursor: pointer;
+  border: 2px solid transparent;
+  border-radius: 4px;
+}
+
 #legend{
   margin-left: auto;
   margin-right: auto;
