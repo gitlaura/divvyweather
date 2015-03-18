@@ -110,6 +110,7 @@ button{
   cursor: pointer;
   border: 2px solid transparent;
   border-radius: 4px;
+  outline:none;
 }
 
 #legend{
