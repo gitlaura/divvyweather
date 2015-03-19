@@ -181,36 +181,77 @@ function filterRides(category) {
             .style("font-size","16px")
             .style("font-weight","bold");
 
-        var focus = chartRide.append("g")
+        /*add focus line*/
+        var focusLine = chartRide.append("g")
               .attr("class", "focus")
               .style("display", "none");
 
-          focus.append("circle")
-              .attr("r", 4.5);
+        focusLine.append("line")
+            .style("stroke", "black")
+            .attr("x1", 0)
+            .attr("y1", 0)
+            .attr("x2", 0);
 
-          focus.append("rect")
-              .attr("x", -80)
-              .attr("y", -28)
-              .attr("width","160px")
-              .attr("height", "15px")
-              .attr("fill","#2B2B2B")
-              .attr("opacity",0.8);
+       /*add temperature textbox*/
+        var focusTempText = chartRide.append("g")
+            .attr("class", "focus")
+            .attr("transform", "translate(" + 600 + "," + 5+")")
+            .style("display", "none");
 
-          focus.append("text")
-              // .attr("x", -10)
-              .attr("y", -20)
-              .style("text-anchor", "middle")
-              .style("font-size","12px")
-              .attr("dy", ".35em")
-              .attr("fill","white");
+        focusTempText.append("rect")
+            .attr("x", -20)
+            .attr("y", -30)
+            .attr("width","95px")
+            .attr("height", "36px")
+            .style("stroke", "#4d4d4d")
+            .style("fill", "none")
+            .style("stroke-width", "1")
+            .attr("border", "2px solid")
+            .attr("opacity",0.8);
 
-          chartRide.append("rect")
-              .attr("class", "overlay")
-              .attr("width", width)
-              .attr("height", height)
-              .on("mouseover", function() { focus.style("display", null); })
-              .on("mouseout", function() { focus.style("display", "none"); })
-              .on("mousemove", mousemove);
+        focusTempText.append("text")
+            .attr("x", -15)
+            .attr("y", -20)
+            .style("text-anchor", "left")
+            .style("font-size","12px")
+            .attr("dy", ".35em")
+            .attr("fill","#4d4d4d");
+
+        /*add first line*/
+        var focusText1 = chartRide.append("g")
+            .attr("class", "focus")
+            .attr("transform", "translate(" + 600 + "," + 20 +")")
+            .style("display", "none");
+
+        focusText1.append("text")
+            .attr("x", -15)
+            .attr("y", -20)
+            .style("text-anchor", "left")
+            .style("font-size","12px")
+            .attr("dy", ".35em")
+            .attr("fill","#3db7e4");
+
+        /*add second line*/
+        var focusText2 = chartRide.append("g")
+            .attr("class", "focus")
+            .attr("transform", "translate(" + 600 + "," + 35 +")")
+            .style("display", "none");
+
+        focusText2.append("text")
+            .attr("x", -15)
+            .attr("y", -20)
+            .style("text-anchor", "left")
+            .style("font-size","12px")
+            .attr("dy", ".35em")
+            .attr("fill","#3db7e4");
+
+       chartRide.append("rect")
+           .attr("class", "overlay")
+           .attr("width", width)
+           .attr("height", height)
+           .on("mouseover", function() { focusLine.style("display", null); focusText1.style("display", null); focusText2.style("display", null); focusTempText.style("display", null); })
+           .on("mouseout", function() { focusLine.style("display", "none"); focusText1.style("display", "none"); focusText2.style("display", "none"); focusTempText.style("display", "none"); })
+           .on("mousemove", mousemove);
 
           function mousemove() {
             console.log(category);
@@ -219,17 +260,23 @@ function filterRides(category) {
                 d0 = data[i - 1],
                 d1 = data[i],
                 d = x0 - d0.date > d1.date - x0 ? d1 : d0;
-            focus.attr("transform", "translate(" + xRide(d.date) + "," +y0Ride(d.avg_temp) + ")");
-            focus.select("text").text("Temp: " + formatOne(d.avg_temp) + ",  Rides: "+ d.rides_total);
+            focusLine.attr("transform", "translate(" + xRide(d.date) + "," +y0Ride(d.avg_temp) + ")");
+            focusLine.select("line").attr("y2", "" + (190 - y0Ride(d.avg_temp)) + "");
+            focusTempText.select("text").text("Avg Temp: " + formatOne(d.avg_temp));
+            focusText1.select("text").text("Rides: "+ d.rides_total);
             if (category == 'gender'){
-              focus.select("text").text("Temp: " + formatOne(d.avg_temp) + ", Female: "+ d.female_rides + ", Male: "+ d.male_rides);
-              focus.select("rect").attr("width","200px");
-              focus.select("rect").attr("x",-100);
+              focusTempText.select("rect").attr("height", "50px")
+              focusText1.select("text").text("Female: "+ d.female_rides);
+              focusText1.select("text").attr("fill",femaleColor);
+              focusText2.select("text").text("Male: "+ d.male_rides);
+              focusText2.select("text").attr("fill",maleColor)
             }
             if (category == 'customer'){
-              focus.select("text").text("Temp: " + formatOne(d.avg_temp) + ", Subscriber: "+ d.subscriber_rides+ ", Customer: "+ d.customer_rides);
-              focus.select("rect").attr("width","240px");
-              focus.select("rect").attr("x",-120);
+              focusTempText.select("rect").attr("height", "50px")
+              focusText1.select("text").text("Subscriber: "+ d.subscriber_rides);
+              focusText1.select("text").attr("fill",customerColor);
+              focusText2.select("text").text("Customer: "+ d.customer_rides);
+              focusText2.select("text").attr("fill",subscriberColor)
             }
           }
   });
@@ -417,35 +464,77 @@ function filterTime(category){
           .style("font-size","16px")
           .style("font-weight","bold");
 
-          var focus = chartTime.append("g")
+          /*add focus line*/
+          var focusLine = chartTime.append("g")
                 .attr("class", "focus")
                 .style("display", "none");
 
-            focus.append("circle")
-                .attr("r", 4.5);
+          focusLine.append("line")
+              .style("stroke", "black")
+              .attr("x1", 0)
+              .attr("y1", 0)
+              .attr("x2", 0);
 
-            focus.append("rect")
-                .attr("x", -80)
-                .attr("y", -28)
-                .attr("width","160px")
-                .attr("height", "15px")
-                .attr("fill","#2B2B2B")
-                .attr("opacity",0.8);
+         /*add temperature textbox*/
+          var focusTempText = chartTime.append("g")
+              .attr("class", "focus")
+              .attr("transform", "translate(" + 600 + "," + 5+")")
+              .style("display", "none");
 
-            focus.append("text")
-                .attr("y", -20)
-                .style("text-anchor", "middle")
-                .attr("dy", ".35em")
-                .style("font-size","12px")
-                .attr("fill","white");
+          focusTempText.append("rect")
+              .attr("x", -20)
+              .attr("y", -30)
+              .attr("width","95px")
+              .attr("height", "36px")
+              .style("stroke", "#4d4d4d")
+              .style("fill", "none")
+              .style("stroke-width", "1")
+              .attr("border", "2px solid")
+              .attr("opacity",0.8);
 
-            chartTime.append("rect")
-                .attr("class", "overlay")
-                .attr("width", width)
-                .attr("height", height)
-                .on("mouseover", function() { focus.style("display", null); })
-                .on("mouseout", function() { focus.style("display", "none"); })
-                .on("mousemove", mousemove);
+          focusTempText.append("text")
+              .attr("x", -15)
+              .attr("y", -20)
+              .style("text-anchor", "left")
+              .style("font-size","12px")
+              .attr("dy", ".35em")
+              .attr("fill","#4d4d4d");
+
+          /*add first line*/
+          var focusText1 = chartTime.append("g")
+              .attr("class", "focus")
+              .attr("transform", "translate(" + 600 + "," + 20 +")")
+              .style("display", "none");
+
+          focusText1.append("text")
+              .attr("x", -15)
+              .attr("y", -20)
+              .style("text-anchor", "left")
+              .style("font-size","12px")
+              .attr("dy", ".35em")
+              .attr("fill","#3db7e4");
+
+          /*add second line*/
+          var focusText2 = chartTime.append("g")
+              .attr("class", "focus")
+              .attr("transform", "translate(" + 600 + "," + 35 +")")
+              .style("display", "none");
+
+          focusText2.append("text")
+              .attr("x", -15)
+              .attr("y", -20)
+              .style("text-anchor", "left")
+              .style("font-size","12px")
+              .attr("dy", ".35em")
+              .attr("fill","#3db7e4");
+
+         chartTime.append("rect")
+             .attr("class", "overlay")
+             .attr("width", width)
+             .attr("height", height)
+             .on("mouseover", function() { focusLine.style("display", null); focusText1.style("display", null); focusText2.style("display", null); focusTempText.style("display", null); })
+             .on("mouseout", function() { focusLine.style("display", "none"); focusText1.style("display", "none"); focusText2.style("display", "none"); focusTempText.style("display", "none"); })
+             .on("mousemove", mousemove);
 
             function mousemove() {
               console.log(category);
@@ -454,17 +543,25 @@ function filterTime(category){
                   d0 = data[i - 1],
                   d1 = data[i],
                   d = x0 - d0.date > d1.date - x0 ? d1 : d0;
-              focus.attr("transform", "translate(" + xTime(d.date) + "," +y0Time(d.avg_temp) + ")");
-              focus.select("text").text("Temp: " + formatOne(d.avg_temp) + ",  Avg Minutes: "+formatOne(d.total_minutes));
+              focusLine.attr("transform", "translate(" + xTime(d.date) + "," +y0Time(d.avg_temp) + ")");
+              focusLine.select("line").attr("y2", "" + (190 - y0Time(d.avg_temp)) + "");
+              focusTempText.select("text").text("Avg Temp: " + formatOne(d.avg_temp));
+              focusText1.select("text").text("Avg Minutes: "+ formatOne(d.total_minutes));
               if (category == 'gender'){
-                focus.select("text").text("Temp: " + formatOne(d.avg_temp) + ", Female: "+formatOne(d.female_minutes) + ", Male: "+formatOne(d.male_minutes));
-                focus.select("rect").attr("width","200px");
-                focus.select("rect").attr("x",-100);
+                focusTempText.select("rect").attr("height", "50px")
+                focusText1.select("text").text("Female: "+ formatOne(d.female_minutes));
+                focusText1.select("text").attr("fill",femaleColor);
+                focusText2.select("text").text("Male: "+ formatOne(d.male_minutes));
+                focusText2.select("text").attr("fill",maleColor)
               }
               if (category == 'customer'){
-                focus.select("text").text("Temp: " + formatOne(d.avg_temp) + ", Subscriber: "+ formatOne(d.subscriber_minutes)+ ", Customer: "+formatOne(d.customer_minutes));
-                focus.select("rect").attr("width","220px");
-                focus.select("rect").attr("x",-110);
+                focusLine.attr("transform", "translate(" + xTime(d.date) + "," +y1Time(d.customer_minutes) + ")");
+                focusLine.select("line").attr("y2", "" + (190 - y1Time(d.customer_minutes)) + "");
+                focusTempText.select("rect").attr("height", "50px")
+                focusText1.select("text").text("Subscriber: "+ formatOne(d.subscriber_minutes));
+                focusText1.select("text").attr("fill",customerColor);
+                focusText2.select("text").text("Customer: "+ formatOne(d.customer_minutes));
+                focusText2.select("text").attr("fill",subscriberColor)
               }
             }
 

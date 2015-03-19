@@ -180,36 +180,77 @@ function filterDistance(category){
           .style("font-size","16px")
           .style("font-weight","bold");
 
-          var focus = chartDistance.append("g")
+          /*add focus line*/
+          var focusLine = chartDistance.append("g")
                 .attr("class", "focus")
                 .style("display", "none");
 
-            focus.append("circle")
-                .attr("r", 4.5);
+          focusLine.append("line")
+              .style("stroke", "black")
+              .attr("x1", 0)
+              .attr("y1", 0)
+              .attr("x2", 0);
 
-            focus.append("rect")
-                .attr("x", -80)
-                .attr("y", -28)
-                .attr("width","160px")
-                .attr("height", "15px")
-                .attr("fill","#2B2B2B")
-                .attr("opacity",0.8);
+         /*add temperature textbox*/
+          var focusTempText = chartDistance.append("g")
+              .attr("class", "focus")
+              .attr("transform", "translate(" + 630 + "," + 1+")")
+              .style("display", "none");
 
-            focus.append("text")
-                // .attr("x", -10)
-                .attr("y", -20)
-                .style("text-anchor", "middle")
-                .style("font-size","12px")
-                .attr("dy", ".35em")
-                .attr("fill","white");
+          focusTempText.append("rect")
+              .attr("x", -20)
+              .attr("y", -30)
+              .attr("width","85px")
+              .attr("height", "35px")
+              .style("stroke", "#4d4d4d")
+              .style("fill", "none")
+              .style("stroke-width", "1")
+              .attr("border", "2px solid")
+              .attr("opacity",0.8);
 
-            chartDistance.append("rect")
-                .attr("class", "overlay")
-                .attr("width", width)
-                .attr("height", height)
-                .on("mouseover", function() { focus.style("display", null); })
-                .on("mouseout", function() { focus.style("display", "none"); })
-                .on("mousemove", mousemove);
+          focusTempText.append("text")
+              .attr("x", -15)
+              .attr("y", -20)
+              .style("text-anchor", "left")
+              .style("font-size","12px")
+              .attr("dy", ".35em")
+              .attr("fill","#4d4d4d");
+
+          /*add first line*/
+          var focusText1 = chartDistance.append("g")
+              .attr("class", "focus")
+              .attr("transform", "translate(" + 630 + "," + 16 +")")
+              .style("display", "none");
+
+          focusText1.append("text")
+              .attr("x", -15)
+              .attr("y", -20)
+              .style("text-anchor", "left")
+              .style("font-size","12px")
+              .attr("dy", ".35em")
+              .attr("fill","#3db7e4");
+
+          /*add second line*/
+          var focusText2 = chartDistance.append("g")
+              .attr("class", "focus")
+              .attr("transform", "translate(" + 630 + "," + 30 +")")
+              .style("display", "none");
+
+          focusText2.append("text")
+              .attr("x", -15)
+              .attr("y", -20)
+              .style("text-anchor", "left")
+              .style("font-size","12px")
+              .attr("dy", ".35em")
+              .attr("fill","#3db7e4");
+
+         chartDistance.append("rect")
+             .attr("class", "overlay")
+             .attr("width", width)
+             .attr("height", height)
+             .on("mouseover", function() { focusLine.style("display", null); focusText1.style("display", null); focusText2.style("display", null); focusTempText.style("display", null); })
+             .on("mouseout", function() { focusLine.style("display", "none"); focusText1.style("display", "none"); focusText2.style("display", "none"); focusTempText.style("display", "none"); })
+             .on("mousemove", mousemove);
 
             function mousemove() {
               console.log(category);
@@ -218,17 +259,27 @@ function filterDistance(category){
                   d0 = data[i - 1],
                   d1 = data[i],
                   d = x0 - d0.date > d1.date - x0 ? d1 : d0;
-              focus.attr("transform", "translate(" + xDistance(d.date) + "," +y0Distance(d.avg_temp) + ")");
-              focus.select("text").text("Temp: " + formatOne(d.avg_temp) + ",  Avg Miles: "+ formatOne(d.total_miles));
+              focusLine.attr("transform", "translate(" + xDistance(d.date) + "," +y1Distance(d.total_miles) + ")");
+              focusLine.select("line").attr("y2", "" + (190 - y1Distance(d.total_miles)) + "");
+              focusTempText.select("text").text("Avg Temp: " + formatOne(d.avg_temp));
+              focusText1.select("text").text("Avg Miles: "+ formatOne(d.total_miles));
               if (category == 'gender'){
-                focus.select("text").text("Temp: " + formatOne(d.avg_temp) + ", Female: "+ formatOne(d.female_miles) + ", Male: "+ formatOne(d.male_miles));
-                focus.select("rect").attr("width","200px");
-                focus.select("rect").attr("x",-100);
+                focusLine.attr("transform", "translate(" + xDistance(d.date) + "," +y1Distance(d.female_miles) + ")");
+                focusLine.select("line").attr("y2", "" + (190 - y1Distance(d.female_miles)) + "");
+                focusTempText.select("rect").attr("height", "50px")
+                focusText1.select("text").text("Female: "+ formatOne(d.female_miles));
+                focusText1.select("text").attr("fill",femaleColor);
+                focusText2.select("text").text("Male: "+ formatOne(d.male_miles));
+                focusText2.select("text").attr("fill",maleColor)
               }
               if (category == 'customer'){
-                focus.select("text").text("Temp: " + formatOne(d.avg_temp) + ", Subscriber: "+ formatOne(d.subscriber_miles) + ", Customer: "+ formatOne(d.customer_miles));
-                focus.select("rect").attr("width","220px");
-                focus.select("rect").attr("x",-110);
+                focusLine.attr("transform", "translate(" + xDistance(d.date) + "," +y1Distance(d.customer_miles) + ")");
+                focusLine.select("line").attr("y2", "" + (190 - y1Distance(d.customer_miles)) + "");
+                focusTempText.select("rect").attr("height", "50px")
+                focusText1.select("text").text("Subscriber: "+ formatOne(d.subscriber_miles));
+                focusText1.select("text").attr("fill",customerColor);
+                focusText2.select("text").text("Customer: "+ formatOne(d.customer_miles));
+                focusText2.select("text").attr("fill",subscriberColor)
               }
             }
 
