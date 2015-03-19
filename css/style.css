@@ -107,11 +107,17 @@ button{
   text-align: center;
   white-space: nowrap;
   vertical-align: middle;
-  ms-touch-action: manipulation;
-  touch-action: manipulation;
   cursor: pointer;
   border: 2px solid transparent;
   border-radius: 4px;
+  outline:none;
+  opacity: 1.0;
+  transition: opacity 0.3s linear;
+}
+
+button:hover {
+  opacity: 0.7;
+  transition: opacity;
 }
 
 #legend{
