@@ -20,8 +20,8 @@
       </br>
       <div id="buttonWrapper">
         <h3 style="text-align:center; margin-top:2px; float: left;">Select a filter: </h3>
-        <div id=buttonGender><button onclick="filterCategory('gender')">By Gender</button></div>
-        <div id=buttonCustomer><button onclick="filterCategory('customer')">By Customer Type</button></div>
+        <div id=buttonGender><button onclick="filterCategory('gender')">Gender</button></div>
+        <div id=buttonCustomer><button onclick="filterCategory('customer')">Customer Type</button></div>
         <div id=buttonClear><button onclick="filterCategory('total')">Clear</button></div>
       </div>
       <br>
@@ -149,6 +149,7 @@
     document.getElementById("totalstats").style.display = 'none';
     document.getElementById("genderstats").style.display = 'none';
     document.getElementById("customerstats").style.display = 'none';
+    document.getElementById("totalLegend").style.display = 'block';
     document.getElementById("femaleLegend").style.display = 'none';
     document.getElementById("maleLegend").style.display = 'none';
     document.getElementById("subscriberLegend").style.display = 'none';
@@ -163,16 +164,18 @@
       document.getElementById("totalstats").style.display = 'block';
     }
     if(category == 'gender'){
+      document.getElementById("totalLegend").style.display = 'none';
       document.getElementById("genderstats").style.display = 'block';
       document.getElementById("femaleLegend").style.display = 'block';
       document.getElementById("maleLegend").style.display = 'block';
-      document.getElementById('legend').style.width = "570px";
+      document.getElementById('legend').style.width = "440px";
     }
     if(category == 'customer'){
+      document.getElementById("totalLegend").style.display = 'none';
       document.getElementById("customerstats").style.display = 'block';
       document.getElementById("customerLegend").style.display = 'block';
       document.getElementById("subscriberLegend").style.display = 'block';
-      document.getElementById('legend').style.width = "580px";
+      document.getElementById('legend').style.width = "450px";
     }
   }
   </script>
