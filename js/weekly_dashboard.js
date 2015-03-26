@@ -377,7 +377,7 @@ function filterTime(category){
     xTime.domain(d3.extent(data, function(d) { return d.date; }));
     y0Time.domain([0, d3.max(data, function(d) {
       return Math.max(d.avg_temp); })]);
-    y1Time.domain([0, d3.max(data, function(d) {
+    y1Time.domain([5, d3.max(data, function(d) {
       return Math.max(d.customer_minutes); })]);
 
     // chartTime.filter(function (d, i) {return d.total_minutes > 5000;})

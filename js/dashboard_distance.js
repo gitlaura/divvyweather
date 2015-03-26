@@ -93,7 +93,7 @@ function filterDistance(category){
     xDistance.domain(d3.extent(data, function(d) { return d.date; }));
     y0Distance.domain([0, d3.max(data, function(d) {
       return Math.max(d.avg_temp); })]);
-    y1Distance.domain([0, d3.max(data, function(d) {
+    y1Distance.domain([0.8, d3.max(data, function(d) {
       return Math.max(d.customer_miles); })]);
 
     // chartDistance.filter(function (d, i) {return d.total_miles > 5000;})
